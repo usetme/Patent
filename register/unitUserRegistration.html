@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<!--[if IE]>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <![endif]-->
+<title></title>
+<!-- BOOTSTRAP CORE STYLE  -->
+<link href="../assets/css/bootstrap.css" rel="stylesheet">
+<!-- FONT AWESOME STYLE  -->
+<link href="../assets/css/font-awesome.min.css" rel="stylesheet">
+<!-- CUSTOM STYLE  -->
+<link href="../assets/css/style.css" rel="stylesheet">
+<link href="../assets/css/others.css" rel="stylesheet">
+<link href="../assets/css/bootstrapValidator.min.css" rel="stylesheet">
+<script src="../assets/js/jquery-1.10.2.min.js"></script>
+<script src="../assets/js/jquery.form.min.js"></script>
+<script src="../assets/js/bootstrapValidator.min.js"></script>
+<script src="../assets/js/vue.min.js"></script>
+</head>
+<body>
+	<div class="bgcol1">
+		<div class="container site-top">
+			<nav class="navbar">
+				<div class="navbar-header">
+					<img src="../assets/images/logo.png" alt="" />
+				</div>
+				<div class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						<li><span class="title"></span></li>
+						<li><span class="text-muted">欢迎登录</span></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="">首页</a></li>
+						<li><a href="">优势</a></li>
+						<li><a href="">服务</a></li>
+						<li><a href="">公司简介</a></li>
+					</ul>
+				</div>
+				<!-- /.navbar-collapse -->
+			</nav>
+		</div>
+	</div>
+	<div class="container register" id="app">
+		<div class="left">
+			<div id="form" class="form-horizontal">
+				<input type="hidden" name="type" value="1" />
+				<div class="form-group type">
+					<label for="name" class="col-xs-3 control-label"><span>*</span>选择类别:</label>
+					<div class="col-xs-9">
+						<a href="../register/personalRegister.html">个人用户</a> <a
+							href="../register/unitUserRegistration.html" class="active">企业用户</a> <a
+							href="../register/agentRegister.html">代理人用户</a>
+					</div>
+				</div>
+				<div class="form-group">
+				<label for="phone" class="col-xs-3 control-label"><span>*</span>手机</label>
+				<div class="col-xs-6">
+					<input class="form-control" type="text" name="phone">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="phone" class="col-xs-3 control-label"><span>*</span>校验码</label>
+				<div class="col-xs-3">
+					<input class="form-control" type="text" name="code">
+				</div>
+				<div class="col-xs-3">
+					<button type="button" class="phone_button" v-on:click="getCode" id="getCode">获取验证码</button>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="password" class="col-xs-3 control-label"><span>*</span>请输入密码</label>
+				<div class="col-xs-6">
+					<input class="form-control" type="password" name="password"> <span class="text-muted">密码长度8~16位数字、字母、字符至少包含两种</span>
+				</div>
+			</div>
+			<div class="form-group mb">
+				<label for="" class="col-xs-3 control-label"><span>*</span>请再次输入密码</label>
+				<div class="col-xs-6">
+					<input class="form-control" type="password" name="pwd">
+				</div>
+			</div>
+				<div class="form-group">
+					<label for="company" class="col-xs-3 control-label"><span>*</span>单位名称</label>
+					<div class="col-xs-6">
+						<input class="form-control" type="text" name="company">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="business_license_no" class="col-xs-3 control-label"><span>*</span>营业执照号</label>
+					<div class="col-xs-6">
+						<input class="form-control" type="text" name="business_license_no">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-xs-6 col-xs-offset-3">
+						<form role="form" action="../common/upload" method="post" enctype="multipart/form-data"
+							class="upload">
+							<span>上传证件</span> <input type="file"
+								class="form-control" name="file" v-on:change="upload" />
+						</form>
+						<input type="hidden" id="licence_pic" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="business_license_no" class="col-xs-3 control-label"><span>*</span>地址</label>
+					<div class="col-xs-3">
+						<select name="area_id1" class="form-control" v-on:change="changeProvince">
+							<option value="">请选择</option>
+							<option v-for="p in province" value="{{p.id}}">{{p.name}}</option>
+						</select>
+					</div>
+					<div class="col-xs-3">
+						<select name="area_id2" class="form-control">
+							<option value="">请选择</option>
+							<option v-for="c in city" value="{{c.id}}">{{c.name}}</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="address" class="col-xs-3 control-label"><span>*</span>详细地址</label>
+					<div class="col-xs-6">
+						<input class="form-control" type="text" name="address">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="name" class="col-xs-3 control-label"><span>*</span>姓名</label>
+					<div class="col-xs-6">
+						<input class="form-control" type="text" name="name">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="card" class="col-xs-3 control-label"><span>*</span>身份证</label>
+					<div class="col-xs-6">
+						<input class="form-control" type="text" name="card">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="email" class="col-xs-3 control-label">邮箱</label>
+					<div class="col-xs-6">
+						<input class="form-control" type="text" name="email">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="qq" class="col-xs-3 control-label">QQ</label>
+					<div class="col-xs-6">
+						<input class="form-control" type="text" name="qq">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-xs-6 col-xs-offset-3">
+						<div class="checkbox">
+							<label> <input type="checkbox" name="check"><i></i> 我已阅读并同意<a href=""> <<专利派单注册协议>>
+									</a>
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-xs-6 col-xs-offset-3">
+						<button type="button" v-on:click="submit" class="btn btn-submit">注册</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="right">
+			<p>
+				<span class="text-muted">已有专利派单账号，</span><a href="../login.html">直接登陆</a>
+			</p>
+			<img src="../assets/images/weChat.png" alt="" class="wechat">
+			<p class="text-muted">扫码关注我们</p>
+		</div>
+	</div>
+	<div class="bgcol2">
+		<div class="container footer">
+			<div class="footer-link pull-left">
+				<div class="clearfix">
+					<ul class="nav">
+						<li><a href="">关于我们</a></li>
+						<li><a href="">联系方式</a></li>
+						<li><a href="">加入我们</a></li>
+						<li><a href="">支付方式</a></li>
+					</ul>
+				</div>
+				<p>Copyright 2005-2006zbj.com</p>
+			</div>
+		</div>
+	</div>
+	<div class="site-quick">
+		<ul>
+			<li><img src="../assets/images/footer1.png" alt="" /></li>
+			<li><img src="../assets/images/footer2.png" alt="" /></li>
+			<li><img src="../assets/images/footer3.png" alt="" /></li>
+		</ul>
+	</div>
+	<script>
+    $(function(){
+      var vm = new Vue({
+        el : "#app",
+        data : {
+          province : [],
+          city : []
+        },
+        created : function(){
+          $.get("../area/getList?parent_id=1", function(data){
+            vm.province = data.data
+          }, "JSON")
+        },
+        methods : {
+          changeProvince : function(event){
+            $.get("../area/getList?parent_id=" + $(event.target).val(), function(data){
+              vm.city = data.data
+            }, "JSON")
+          },
+          upload : function(event){
+    		  $(event.target).closest("form").ajaxSubmit({
+                  dataType : "json",
+                  success : function(data){
+            	  $.post("../attachment/getAttment/"+data.data,{
+            	  },function(data){
+            		  $(event.target).closest("form").next().val(data.data.id);
+                      $(event.target).closest("form").after('<img src="'+data.data.path+'" class="only_img"/>');
+            	  },"JSON")
+                  }
+                })
+         
+          },
+          getCode : function(event){
+            var second = 60;
+            $("#getCode").attr("disabled", true);
+            var time = setInterval(function(){
+              if (second < 0) {
+                clearInterval(time);
+                $("#getCode").attr("disabled", false).html("获取验证码");
+              } else {
+                $("#getCode").html(second + "秒后重新获取");
+                second--;
+              }
+            }, 1000)
+            		$.post("../vcode/addVcode",{
+              		  phone:$("input[name='phone']").val()
+              	  },function(data){
+              		  if(data.success){
+              			  
+              		  }
+              	  },"JSON");
+          },
+          submit : function(event){
+            if ($('#form').data('bootstrapValidator').isValid()) {
+              $.post("../register/create", {
+                type : $("input[name='type']").val(),
+                company : $("input[name='company']").val(),
+                business_license_no : $("input[name='business_license_no']").val(),
+                business_licence : $("#licence_pic").val(),
+                area_id1 : $("select[name='area_id1']").val(),
+                area_id2 : $("select[name='area_id2']").val(),
+                address : $("input[name='address']").val(),
+                name : $("input[name='name']").val(),
+                card : $("input[name='card']").val(),
+                phone : $("input[name='phone']").val(),
+                code:$("input[name='code']").val(),
+                password : $("input[name='password']").val(),
+                email : $("input[name='email']").val(),
+                qq : $("input[name='qq']").val(),
+              }, function(data){
+                if (data.success) {
+                  location.href = "loginPass.html?phone=" + $("input[name='phone']").val()
+                } else {
+                  
+                }
+              }, "JSON")
+            } else {
+              $('#form').bootstrapValidator('validate')
+            }
+          }
+        }
+      
+      })
+      $('#form').bootstrapValidator({
+        message : 'This value is not valid',
+        feedbackIcons : {
+          valid : 'glyphicon glyphicon-ok',
+          invalid : 'glyphicon glyphicon-remove',
+          validating : 'glyphicon glyphicon-refresh'
+        },
+        fields : {
+          company : {
+            message : '单位名称验证失败',
+            validators : {
+              notEmpty : {
+                message : '单位名称不能为空'
+              },
+            }
+          },
+          business_license_no : {
+            message : '营业执照号验证失败',
+            validators : {
+              notEmpty : {
+                message : '营业执照号不能为空'
+              },
+            }
+          },
+          area_id1 : {
+            message : '省份验证失败',
+            validators : {
+              notEmpty : {
+                message : '省份不能为空'
+              },
+            }
+          },
+          area_id2 : {
+            message : '城市验证失败',
+            validators : {
+              notEmpty : {
+                message : '城市不能为空'
+              },
+            }
+          },
+          address : {
+            message : '地址验证失败',
+            validators : {
+              notEmpty : {
+                message : '地址不能为空'
+              },
+            }
+          },
+          name : {
+            message : '用户名验证失败',
+            validators : {
+              notEmpty : {
+                message : '用户名不能为空'
+              },
+            }
+          },
+          card : {
+            validators : {
+              notEmpty : {
+                message : '身份证号码不能为空'
+              },
+              regexp : {
+                regexp : /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/,
+                message : '身份证号码格式错误'
+              }
+            }
+          },
+          phone : {
+            validators : {
+              notEmpty : {
+                message : '手机号码不能为空'
+              },
+              regexp : {
+                regexp : /^[0-9]{11}$/,
+                message : '手机号码格式错误'
+              }
+            }
+          },
+          code : {
+            message : '验证码验证失败',
+            validators : {
+              notEmpty : {
+                message : '验证码不能为空'
+              },
+            }
+          },
+          password : {
+            validators : {
+              notEmpty : {
+                message : '密码不能为空'
+              }
+            }
+          },
+          pwd : {
+            validators : {
+              notEmpty : {
+                message : '密码不能为空'
+              },
+              identical : {
+                field : 'password',
+                message : '两次密码不一致'
+              }
+            }
+          },
+          email : {
+            validators : {
+              emailAddress : {
+                message : '请填写正确的邮箱地址。'
+              }
+            }
+          },
+          check : {
+            validators : {
+              notEmpty : {
+                message : '请确认同意。'
+              }
+            }
+          }
+        }
+      })
+    })
+  </script>
+</body>
+</html>

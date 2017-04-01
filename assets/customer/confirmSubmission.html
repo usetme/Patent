@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en" class="index">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<!--[if IE]>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <![endif]-->
+<title></title>
+<!-- BOOTSTRAP CORE STYLE  -->
+<link href="../assets/css/bootstrap.css" rel="stylesheet">
+<!-- FONT AWESOME STYLE  -->
+<link href="../assets/css/font-awesome.min.css" rel="stylesheet">
+<!-- CUSTOM STYLE  -->
+<link href="../assets/css/style.css" rel="stylesheet">
+<link href="../assets/css/others.css" rel="stylesheet">
+<script src="../assets/js/jquery-1.10.2.min.js"></script>
+<script src="../assets/js/jquery.form.min.js"></script>
+<script src="../assets/js/cookie.js"></script>
+<script src="../assets/js/vue.min.js"></script>
+</head>
+<body>
+	<div class="container site-top">
+		<nav class="navbar">
+			<div class="navbar-header">
+				<img src="../assets/images/logo.png" alt="" />
+			</div>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li><span class="title"></span></li>
+					<li><span class="text-muted">欢迎登录</span></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="">首页</a></li>
+					<li><a href="">优势</a></li>
+					<li><a href="">服务</a></li>
+					<li><a href="">公司简介</a></li>
+				</ul>
+			</div>
+		</nav>
+		<div class="logout">
+			<span>你好！<span id="username"></span><span class="triangle-down"></span></span>
+			<div>
+				<span class="triangle-up"></span> <a href="javascript:void(0);" id="logout">退出</a>
+			</div>
+		</div>
+	</div>
+	</div>
+	<div class="container-fluid banner" id="app">
+		<div class="container">
+			<div class=clearfix>
+				<ol class="breadcrumb pull-left">
+					<li><a href="clientPage.html">基本资料</a></li>
+					<li class="active">我的委托</li>
+					<li><a href="controlOverInvoices.html">发票管理</a></li>
+					<li><a href="evaluationManagement.html">评价管理</a></li>
+					<li><a href="rightsReport.html">售后服务</a></li>
+					<li><a href="myNews.html">我的消息</a></li>
+				</ol>
+				<a href="postYourWant.html" class="pull-right push">发布新的需求</a> <a href="postYourWant.html"
+					class="pull-right push">发布新的需求</a>
+			</div>
+			<div class="site-nav">
+				<ul>
+					<li><a href="clientPage.html"><i class="icon icon-1"></i>基本资料</a>
+						<ul>
+							<li><a href="clientPage.html">个人信息</a></li>
+							<li><a href="changePwd.html">重置密码</a></li>
+						</ul></li>
+					<li class="active"><a href="myCommission.html"><i class="icon icon-2"></i>我的委托</a></li>
+					<li><a href="controlOverInvoices.html"><i class="icon icon-3"></i>发票管理</a>
+						<ul>
+							<li><a href="controlOverInvoices.html">申请开票</a></li>
+							<li><a href="historyControlOverInvoices.html">开票历史</a></li>
+							<li><a href="address.html">地址管理</a></li>
+						</ul></li>
+					<li><a href="evaluationManagement.html"><i class="icon icon-4"></i>评价管理</a></li>
+					<li><a href="rightsReport.html"><i class="icon icon-5"></i>售后服务</a>
+						<ul>
+							<li><a href="rightsReport.html">维权举报</a></li>
+						</ul></li>
+					<li><a href="myNews.html"><i class="icon icon-6"></i>我的消息(0)</a></li>
+				</ul>
+			</div>
+			<div class="site-main">
+				<div class="title">
+					<span>我的委托</span>
+				</div>
+				<div class="table-responsive">
+					<table class="table table-striped" id="table">
+						<thead>
+							<tr>
+								<th>行业类型</th>
+								<th>专利类型</th>
+								<th style="width: 360px;">操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="demand in demands">
+								<td>{{demand.domain_id | getDomain}}</td>
+								<td>{{demand.ipr_type_id | iprType}}</td>
+								<td>
+									<button type="button" class="btn" v-on:click="look($event,demand.id)">
+										<i class="icon icon-16"></i>查看
+									</button>
+									<button type="button" class="btn" v-on:click="modify($event,demand.id)">
+										<i class="icon icon-17"></i>修改
+									</button>
+									<button type="button" class="btn" v-on:click="del($event,demand.id)">
+										<i class="icon icon-10"></i>删除
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="con-sub">
+					<div class="clearfix">
+						<div class="pull-left">
+							<button type="button" class="new" v-on:click="more">
+								<span class="glyphicon glyphicon-plus"></span>
+							</button>
+							<span>新增一个</span>
+						</div>
+						<div class="time pull-right">
+							<span>即日起所需交稿时间：</span>
+							<button type="button" id="plus">-</button>
+							<input type="text" disabled="disabled" value="10" id="time">
+							<button type="button" id="add">+</button>
+						</div>
+					</div>
+					<div class="clearfix sum">
+						<span>应付总款：￥</span><span id="sum"></span>
+						<div class="pull-right tip">
+							<img src="../assets/images/ask.png">
+							<div>
+								<ul class="pull-left list con_tipleft">
+									<li>发明</li>
+									<li>实用新型</li>
+									<li>外观</li>
+									<li>发明实用新型双报</li>
+								</ul>
+								<ul class="pull-left list con_tipright">
+									<li>￥2000</li>
+									<li>￥800</li>
+									<li>￥350</li>
+									<li>￥2500</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<button class="pull-right btn-submit" type="button" v-on:click="require">确认提交</button>
+				</div>
+				<nav class="nav_foot">
+					<ul class="pagination">
+						<li v-if="currentPage>1"><a href="javascript:void(0);" aria-label="Previous"
+							v-on:click="prev"> <span aria-hidden="true">&laquo;</span>
+						</a></li>
+						<li v-for="p in totalPage" v-if="p<3 || p>totalPage-4 || (p>currentPage-4 && p<currentPage+2)"
+							v-bind:class="{active: currentPage == p+1}"><span v-if="p>3 && p==currentPage-3">...</span>
+							<a href="javascript:void(0);" v-on:click="toPage(p+1)">{{p+1}}</a> <span
+							v-if="p<totalPage-4 && p==currentPage+1">...</span></li>
+						<li v-if="currentPage<totalPage"><a href="javascript:void(0);" aria-label="Next"
+							v-on:click="next"> <span aria-hidden="true">&raquo;</span>
+						</a></li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+	<div class="container footer">
+		<div class="footer-img pull-left">
+			<img src="../assets/images/weChat.png" class="pull-left" alt="" />
+			<div class="pull-left">
+				<p>扫一扫</p>
+				<p>关注我们</p>
+			</div>
+		</div>
+		<div class="footer-link pull-right">
+			<div class="clearfix">
+				<ul class="nav">
+					<li><a href="">关于我们</a></li>
+					<li><a href="">联系方式</a></li>
+					<li><a href="">加入我们</a></li>
+					<li><a href="">支付方式</a></li>
+				</ul>
+			</div>
+			<p>Copyright 2005-2006zbj.com</p>
+		</div>
+	</div>
+
+	<script>
+    $(function(){
+      $("#plus").click(function(){
+        var time = parseInt($("#time").val());
+        if (time > 3) {
+          time--;
+        }
+        $("#time").val(time);
+        time = $("#time").val() > 10 ? 10 : $("#time").val()
+        $("#sum").html(sum + 100 * (10 - time * 1))
+      })
+      $("#add").click(function(){
+        var time = parseInt($("#time").val());
+        time++;
+        $("#time").val(time);
+        time = $("#time").val() > 10 ? 10 : $("#time").val()
+        $("#sum").html(sum + 100 * (10 - time * 1))
+      })
+
+      Vue.filter('getDomain', function(value){
+        return vm.getDomain[value]
+      })
+      Vue.filter('iprType', function(value){
+        return vm.iprType[value]
+      })
+
+      var sum = 0
+
+      var vm = new Vue({
+        el : "#app",
+        data : {
+          demands : [],
+          iprType : {},
+          getDomain : {},
+          iprTypePrice : {}
+        },
+        created : function(){
+          $.get("../common/getIprType", function(data){
+            var x = {};
+            for (var s = 0; s < data.data.length; s++) {
+              x[data.data[s].id] = data.data[s].name;
+            }
+            vm.iprType = x;
+            x = {};
+            for (var s = 0; s < data.data.length; s++) {
+              x[data.data[s].id] = data.data[s].price;
+            }
+            vm.iprTypePrice = x
+          }, "JSON")
+          $.get("../common/getDomain", function(data){
+            var x = {};
+            for (var s = 0; s < data.data.length; s++) {
+              x[data.data[s].id] = data.data[s].name;
+            }
+            vm.getDomain = x;
+          }, "JSON")
+          $.post("../auth/demand/getDemandTemporarys", {
+            order_id : getQueryStringRegExp("order_id"),
+            access_token : getCookie("access_token")
+          }, function(data){
+            var list = {}
+            for ( var key in vm.iprTypePrice) {
+              list[key] = 0
+            }
+            for (var i = 0, l = data.data.length; i < l; i++) {
+              list[data.data[i].ipr_type_id] += 1
+            }
+            for ( var key in list) {
+              sum += vm.iprTypePrice[key] * list[key]
+            }
+            
+            var time = $("#time").val() > 10 ? 10 : $("#time").val()
+            $("#sum").html(sum + 100 * (10 - time * 1))
+            vm.demands = data.data;
+          }, "JSON")
+        },
+        methods : {
+          del : function(event, id){
+            $(event.target).parent().parent().remove();
+            $.post("../auth/demand/deleteDemandTemporary", {
+              access_token : getCookie("access_token"),
+              id : id,
+            }, function(data){
+              
+            }, "JSON")
+          },
+          modify : function(event, id){
+            location.href = "modifySubmitTechnicalClarification.html?access_token=" + getCookie("access_token")
+                + "&order_id=" + getQueryStringRegExp("order_id") + "&id=" + id + "&from=2"
+          },
+          
+          more : function(event){
+            location.href = "submitTechnicalClarification.html?access_token=" + getCookie("access_token")
+                + "&order_id=" + getQueryStringRegExp("order_id") + "&from=2";
+          },
+          look : function(event, id, customer_id){
+            location.href = "submitTechnicalClarificationother.html?access_token=" + getCookie("access_token")
+                + "&order_id=" + getQueryStringRegExp("order_id") + "&id=" + id;
+          },
+          require : function(event){
+            $.post("../auth/demand/createDemand", {
+              access_token : getCookie("access_token"),
+              order_id : getQueryStringRegExp("order_id"),
+              delivery_time : $("#time").val()
+            }, function(data){
+              location.href = "pay.html?access_token=" + getCookie("access_token") + "&id="
+                  + getQueryStringRegExp("order_id")
+            }, "JSON")
+          }
+        },
+      })
+    })
+  </script>
+</body>
+</html>

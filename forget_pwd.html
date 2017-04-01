@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" class="login-html">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<!--[if IE]>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <![endif]-->
+<title>专利派单服务平台——首页</title>
+<!-- BOOTSTRAP CORE STYLE  -->
+<link href="assets/css/bootstrap.css" rel="stylesheet">
+<!-- FONT AWESOME STYLE  -->
+<link href="assets/css/font-awesome.min.css" rel="stylesheet">
+<!-- CUSTOM STYLE  -->
+<link href="assets/css/style.css" rel="stylesheet">
+<link href="assets/css/others.css" rel="stylesheet">
+<script src="assets/js/jquery-1.10.2.min.js"></script>
+<script src="assets/js/cookie.js"></script>
+<script src="assets/js/vue.min.js"></script>
+</head>
+<body>
+
+	<div class="login" id="app">
+	<div class="bgcol1"><div class="container site-top">
+	<nav class="navbar">
+	<div class="navbar-header">
+		<img src="./assets/images/logo.png" alt="" />
+	</div>
+	<div class="collapse navbar-collapse">
+		<ul class="nav navbar-nav">
+			<li><span class="title"></span></li>
+			<li><span class="text-muted">欢迎登录</span></li>
+		</ul>
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="">首页</a></li>
+			<li><a href="">优势</a></li>
+			<li><a href="">服务</a></li>
+			<li><a href="">公司简介</a></li>
+		</ul>
+		</div>
+		<!-- /.navbar-collapse -->
+	</nav>
+	</div>
+	</div>
+		<div class="container register">
+			<div class="forget_pwd">
+				<div class="pwd_img pwd-1"></div>
+				<div class="pwd_content form-horizontal">
+					<div class="form-group">
+						<label class="col-xs-3 control-label">请输入手机号码：</label>
+						<div class="col-xs-6">
+							<input type="text" class="form-control" name="phone" id="phone"/>
+						</div>
+					</div>
+					<div class="form-group mb">
+						<label class="col-xs-3 control-label">请输入验证码：</label>
+						<div class="col-xs-3">
+							<input type="text" class="form-control" name="" id="check"/>
+						</div>
+						<div class="col-xs-3">
+							<button type="button" class="phone_button" v-on:click="getCode" id="getCode">获取验证码</button>
+						</div>
+					</div>
+					<div class="form-group" class="special">
+						<div class="col-xs-6 col-xs-offset-3">
+							验证码输入错误！请重新输入
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-xs-3 control-label"></label>
+						<div class="col-xs-6">
+							<a href="javascript:void(0)" v-on:click="next">下一步</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="bgcol2">
+		<div class="container footer">
+		<div class="footer-img pull-left">
+			<img src="assets/images/weChat.png" class="pull-left" alt="" />
+			<div class="pull-left">
+				<p>扫一扫</p>
+				<p>关注我们</p>
+			</div>
+		</div>
+		
+		<div class="footer-link pull-right">
+			<div class="clearfix">
+				<ul class="nav">
+					<li><a href="">关于我们</a></li>
+					<li><a href="">联系方式</a></li>
+					<li><a href="">加入我们</a></li>
+					<li><a href="">支付方式</a></li>
+				</ul>
+			</div>
+			<p>Copyright 2005-2006zbj.com </p>
+		</div>
+	</div>
+</div>
+		</div>
+
+	<script>
+    $(function(){
+      var vm = new Vue({
+        el : "#app",
+        methods : {
+          getCode : function(event){
+    	  var second = 60;
+          $("#getCode").attr("disabled", true);
+          var time = setInterval(function(){
+            if (second < 0) {
+              clearInterval(time);
+              $("#getCode").attr("disabled", false).html("获取验证码");
+            } else {
+              $("#getCode").html(second + "秒后重新获取");
+              second--;
+            }
+          }, 1000)
+    	  $.post("./vcode/addVcode",{
+    		  phone:$("#phone").val()
+    	  },function(data){
+    		  if(data.success){
+    			  
+    		  }
+    	  },"JSON");
+            
+          },
+          next:function(event){
+        	  $.post("./vcode/checkVcode",{
+        		  phone:$("#phone").val(),
+        		  code:$("#check").val()
+        	  },function(data){
+        		  if(data.success){
+            		  location.href="forget_step2.html?phone="+$("#phone").val()+"&code="+$("#check").val()
+        		  }else{
+        			  $("#special").css("display","block")
+        		  }
+        	  },"JSON")
+          }
+        }
+      })
+    })
+  </script>
+</body>
+</html>

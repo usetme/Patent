@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<!--[if IE]>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <![endif]-->
+<title></title>
+<!-- BOOTSTRAP CORE STYLE  -->
+<link href="../assets/css/bootstrap.css" rel="stylesheet">
+<!-- FONT AWESOME STYLE  -->
+<link href="../assets/css/font-awesome.min.css" rel="stylesheet">
+<!-- CUSTOM STYLE  -->
+<link href="../assets/css/style.css" rel="stylesheet">
+<link href="../assets/css/others.css" rel="stylesheet">
+<link href="../assets/css/bootstrapValidator.min.css" rel="stylesheet">
+<link href="../assets/css/jquery.tagsinput.css" rel="stylesheet">
+<link href="../assets/css/jquery-ui.css" rel="stylesheet">
+<script src="../assets/js/jquery-1.10.2.min.js"></script>
+<script src="../assets/js/bootstrap.js"></script>
+<script src="../assets/js/jquery.form.min.js"></script>
+<script src="../assets/js/bootstrapValidator.min.js"></script>
+<script src="../assets/js/jquery.tagsinput.js"></script>
+<script src="../assets/js/jquery-ui.min.js"></script>
+<script src="../assets/js/cookie.js"></script>
+<script src="../assets/js/vue.min.js"></script>
+</head>
+<body>
+	<div class="container site-top">
+		<nav class="navbar">
+			<div class="navbar-header">
+				<img src="../assets/images/logo.png" alt="" />
+			</div>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li><span class="title"></span></li>
+					<li><span class="text-muted">欢迎登录</span></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="">首页</a></li>
+					<li><a href="">优势</a></li>
+					<li><a href="">服务</a></li>
+					<li><a href="">公司简介</a></li>
+				</ul>
+			</div>
+		</nav>
+		<div class="logout">
+			<span>你好！<span id="username"></span><span class="triangle-down"></span></span>
+			<div>
+				<span class="triangle-up"></span> <a href="javascript:void(0);" id="logout">退出</a>
+			</div>
+		</div>
+	</div>
+	<div id="app" class="container-fluid banner">
+		<div>
+			<div class="container">
+				<div class="clearfix">
+					<ol class="breadcrumb pull-left">
+						<li><a href="clientPage.html">基本资料</a></li>
+						<li class="active">我的委托</li>
+						<li><a href="controlOverInvoices.html">发票管理</a></li>
+						<li><a href="evaluationManagement.html">评价管理</a></li>
+						<li><a href="rightsReport.html">售后服务</a></li>
+						<li><a href="myNews.html">我的消息</a></li>
+					</ol>
+					<a href="postYourWant.html" class="pull-right push">发布新的需求</a> <a href="postYourWant.html"
+						class="pull-right push">发布新的需求</a>
+				</div>
+				<div class="site-main">
+					<div class="title">
+						<span>修改需求</span>
+					</div>
+					<div class="technical form-horizontal" id="form">
+						<div class="form-group type">
+							<label for="ipr_type_id" class="col-md-2 control-label">专利类型：</label>
+							<div class="col-md-7" name="ipr_type_id">
+								<a href="javascript:void(0);" v-for="($index,a) in iprType"
+									v-on:click="selectType($event, $index)"
+									v-bind:class="{active: a.id == demand.ipr_type_id }">{{a.name}}</a> <input type="hidden"
+									id="ipr_type_id" name="ipr_type_id" v-model="demand.ipr_type_id" />
+							</div>
+							<div class="col-md-3">
+								<button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal">从历史技术交底中选取</button>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-2 control-label">行业领域：</label>
+							<div class="col-md-4">
+								<select name="domain_id" id="" class="form-control" v-model="demand.domain_id">
+									<option value="">请选择</option>
+									<option v-for="b in getDomain" value="{{b.id}}">{{b.name}}</option>
+								</select>
+							</div>
+						</div>
+						<div class="all">
+							<div class="form-group">
+								<label class="col-md-2 control-label">第一发明人姓名:</label>
+								<div class="col-md-3">
+									<input class="form-control s-name" type="text" placeholder="请输入第一发明人姓名"
+										name="first_inventor" v-model="demand.inventors[0].name">
+								</div>
+								<div class="col-md-5 checkbox">
+									<input type="checkbox" class="s-check" v-model="demand.inventors[0].is_anonymous"><i></i>是否匿名
+									<p class="glyphicon glyphicon-plus" v-on:click="add"></p>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-2 control-label">第一发明人身份证:</label>
+								<div class="col-md-5">
+									<input class="form-control" type="text" placeholder="请输入第一发明人身份证号码（必填）" name="id_no"
+										v-model="demand.inventors[0].card_id">
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-2 control-label">专利名称:</label>
+							<div class="col-md-5">
+								<input class="form-control" type="text" name="design_name" v-model="demand.design_name">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-2 control-label">描述现有技术的所有缺点及本专利的对应优点:</label>
+							<div class="col-md-10">
+								<textarea class="form-control" rows="3" name="relative_merits"
+									v-model="demand.relative_merits"></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-10 col-md-offset-2 backcol">
+								<p>填写说明:</p>
+								<div>
+									<span>1.发明名称应当简短、准确地表明发明专利申请要求保护的主题和类型；</span>
+									<div class="tip">
+										<img src="../assets/images/red.png" />
+
+										<div>
+											<p>填写说明:</p>
+											<p>1.发明名称应当简短、准确地表明发明专利申请要求保护的主题和类型；</p>
+											<p>2.发明名称中不得含有非技术词语，例如人名、单位名称、商标、代号、型号等；3.不得含有含糊的词语，例如“及其他”、“及其类似物”等；)一种电动汽车集成装置；</p>
+											<p>3.正面描述本发明所要解决的技术问题。如果找不出对比技术方案及其缺点，可用反推法，根据本发明的优点来找对应的缺点。缺点可以是成本高、产率低、合格率低、反应速度慢、副作用、效果差、使用不方便等类似问题。详细阐述本发明所要解决的技术问题；解决的技术问题应体现于解决现有技术的不足。</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-2 control-label">本发明欲保护的创新点:</label>
+							<div class="col-md-10">
+								<textarea class="form-control" rows="3" name="innovation" v-model="demand.innovation"></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-10 col-md-offset-2 backcol">
+								<p>填写说明:</p>
+								<div>
+									<span>创新点为解决现有技术缺陷，达到发明目的的关键技术点</span>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-2 control-label">技术关键词:</label>
+							<div class="col-md-10">
+								<input id="keyword" type="text" name="keyword" class="tags" v-model="demand.keyword" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-2 control-label">本发明技术方案的详细阐述:</label>
+							<div class="col-md-10">
+								<textarea class="form-control" rows="3" name="detail" v-model="demand.detail"></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-10 col-md-offset-2 backcol">
+								<p>填写说明:</p>
+								<div>
+									<span>1.针对发明目的来详细描述本发明的技术方案，并详细说明各硬件设备或功能模块的作用、连接关系以及功能。</span>
+									<div class="tip">
+										<img src="../assets/images/red.png" />
+										<div>
+											<p>填写说明:</p>
+											<p>1.针对发明目的来详细描述本发明的技术方案，并详细说明各硬件设备或功能模块的作用、连接关系以及功能。</p>
+											<p>2.专利必须是一个技术方案，应该阐述发明目的通过什么技术方案来实现的，不能只有原理，也不能只做功能介绍；</p>
+											<p>3.对于产品类型专利，交底书应当描述产品的模块构成或者电路构成，各构成模块的详细说明，可以替代的部件的列举，以及说明组成产品的各部分之间的相互关系；</p>
+											<p>4.对于方法类型的专利，交底书应当写明其步骤，每一步骤实施条件，并列明各骤所需的注意事项，包括可以用不同的参数或者参数范围表示的工艺条件。</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-10 col-md-offset-2">
+								<div class="load-img pull-left">
+									<form role="form" action="../common/uploads" method="post" enctype="multipart/form-data"
+										class="upload">
+										<input type="file" class="form-control" name="files" multiple v-on:change="upload" />
+									</form>
+									<input type="hidden" id="technique_file" v-model="demand.technical_data" />
+								</div>
+								<p class="pull-left">（CAD结构图、框图、电路图、电气原理图、产品或设备实物照片；跟本专利相关的技术材料，word格式）</p>
+							</div>
+						</div>
+						<div class="form-group" id="progress">
+							<div class="col-md-10 col-md-offset-2">
+								<div class="progress">
+									<div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"
+										aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group" id="tech_sub">
+							<button type="button" v-on:click="submit">确认修改</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Modal -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">历史技术交底</h4>
+					</div>
+					<div class="modal-body">
+						<div class="table-responsive">
+							<table class="table table-striped" id="table">
+								<thead>
+									<tr>
+										<th>行业类型</th>
+										<th>专利类型</th>
+										<th>操作</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr v-for="($index,demand) in demands">
+										<td>{{demand.domain_id | getDomain}}</td>
+										<td>{{demand.ipr_type_id | iprType}}</td>
+										<td>
+											<button class=" butn" type="button" v-on:click="select($index)">选择</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container footer">
+		<div class="footer-img pull-left">
+			<img src="../assets/images/weChat.png" class="pull-left" alt="" />
+			<div class="pull-left">
+				<p>扫一扫</p>
+				<p>关注我们</p>
+			</div>
+		</div>
+		<div class="footer-link pull-right">
+			<div class="clearfix">
+				<ul class="nav">
+					<li><a href="">关于我们</a></li>
+					<li><a href="">联系方式</a></li>
+					<li><a href="">加入我们</a></li>
+					<li><a href="">支付方式</a></li>
+				</ul>
+			</div>
+			<p>Copyright 2005-2006zbj.com</p>
+		</div>
+	</div>
+
+	<script>
+    $(function(){
+      $('[data-toggle="popover"]').popover()
+      var vm = new Vue(
+          {
+            el : "#app",
+            data : {
+              iprType : [],
+              getDomain : [],
+              demand : {},
+            },
+            created : function(){
+              $.get("../common/getIprType", function(data){
+                vm.iprType = data.data
+              }, "JSON")
+              $.get("../common/getDomain", function(data){
+                vm.getDomain = data.data
+              }, "JSON")
+              $.post("../auth/demand/getDemandTemporary", {
+                access_token : getCookie("access_token"),
+                id : getQueryStringRegExp("id"),
+                order_id : getQueryStringRegExp("order_id"),
+              }, function(data){
+                vm.demand = data.data
+                $("#iprType").val(data.data.ipr_type_id)
+                $("#getDomain").val(data.data.domain_id)
+                setTimeout(function(){
+                  $("#keyword").tagsInput({
+                    width : 'auto',
+                    defaultText : "回车填写"
+                  });
+                }, 50)
+              }, "JSON")
+            },
+            methods : {
+              add : function(event){
+                $(event.target)
+                    .closest(".all")
+                    .append(
+                        '<div class="form-inline"><div class="form-group"><input class="form-control" type="text" placeholder="请输入第一发明人姓名" name="first_inventor"></div><div class="checkbox"><label> <input type="checkbox"><i></i>是否匿名</label></div></div>')
+              },
+              select : function(index){
+                vm.demand = vm.demands[index]
+                $('#myModal').modal('hide')
+              },
+              selectType : function(event, index){
+                $(".type .active").removeClass("active")
+                $(event.target).addClass("active")
+                $("#ipr_type_id").val(vm.iprType[index].id)
+              },
+              back : function(event){
+                location.href = "confirmSubmission.html?access_token=" + getCookie("access_token") + "&order_id="
+                    + getQueryStringRegExp("order_id")
+              },
+              upload : function(event){
+                $("#progress").show()
+                var num = 0
+                var time = setInterval(function(){
+                  if (num > 9) {
+                    clearInterval(time);
+                  } else {
+                    $("#progress .progress-bar").css("width", num + "0%")
+                    num++;
+                  }
+                }, 200)
+                $(event.target).closest("form").ajaxSubmit({
+                  dataType : "json",
+                  success : function(data){
+                    clearInterval(time);
+                    $("#progress .progress-bar").css("width", "100%")
+                    $(event.target).closest("form").next().val(data.data);
+                    setTimeout(function(){
+                      $("#progress").hide()
+                      $("#progress .progress-bar").css("width", "0%")
+                    }, 500)
+                  }
+                })
+              },
+              submit : function(event, id){
+                $('#form').bootstrapValidator('validate')
+                if ($('#form').data('bootstrapValidator').isValid()) {
+                  
+                  var list = [];
+                  $(".s-name").each(function(){
+                    var obj = {
+                      name : $(this).val()
+                    }
+                    var index = $(".s-name").index(this)
+                    if (index == 0) {
+                      obj.card_id = $("input[name='id_no']").val()
+
+                    } else {
+                      obj.card_id = ""
+                    }
+                    if (!!vm.demand.inventors[index]) {
+                      obj.id = vm.demand.inventors[index].id
+                    }
+                    obj.is_anonymous = $(".s-check").eq(index).is(":checked") ? "1" : "0"
+
+                    list.push(obj)
+                  })
+                  $.post("../auth/demand/updateDemandTemporary", {
+                    id : getQueryStringRegExp("id"),
+                    access_token : getQueryStringRegExp("access_token"),
+                    order_id : getQueryStringRegExp("order_id"),
+                    domain_id : $("select[name='domain_id']").val(),
+                    ipr_type_id : $("select[name='ipr_type_id']").val(),
+                    inventors : JSON.stringify(list),
+                    design_name : $("input[name='design_name']").val(),
+                    relative_merits : $("textarea[name='relative_merits']").val(),
+                    innovation : $("textarea[name='innovation']").val(),
+                    keyword : $("input[name='keyword']").val(),
+                    detail : $("textarea[name='detail']").val(),
+                    pic : $("#pic").val(),
+                    technical_data : $("#technique_file").val(),
+                  }, function(data){
+                    if (data.success) {
+                      location.href = "confirmSubmission.html?access_token=" + getCookie("access_token") + "&order_id="
+                          + getQueryStringRegExp("order_id")
+                    } else {
+                      
+                    }
+                  }, "JSON")
+                } else {
+                  $('#form').bootstrapValidator('validate')
+                }
+              }
+            }
+          })
+      $('#form').bootstrapValidator({
+        message : 'This value is not valid',
+        feedbackIcons : {
+          valid : 'glyphicon glyphicon-ok',
+          invalid : 'glyphicon glyphicon-remove',
+          validating : 'glyphicon glyphicon-refresh'
+        },
+        fields : {
+          domain_id : {
+            validators : {
+              notEmpty : {
+                message : '行业领域不能为空'
+              },
+            }
+          },
+          first_inventor : {
+            validators : {
+              notEmpty : {
+                message : '发明姓名不能为空'
+              },
+            }
+          },
+          id_no : {
+            validators : {
+              notEmpty : {
+                message : '发明人身份证号码不能为空'
+              },
+            }
+          },
+          design_name : {
+            validators : {
+              notEmpty : {
+                message : '发明人设计名称不能为空'
+              },
+            }
+          },
+          relative_merits : {
+            validators : {
+              notEmpty : {
+                message : '现有技术专利优缺点不能为空'
+              },
+            }
+          },
+          detail : {
+            validators : {
+              notEmpty : {
+                message : '本发明保护创新点不能为空'
+              },
+            }
+          },
+          keyword : {
+            validators : {
+              notEmpty : {
+                message : '技术关键词不能为空'
+              },
+            }
+          },
+          innovation : {
+            validators : {
+              notEmpty : {
+                message : '本发明技术方案的详细阐述不能为空'
+              },
+            }
+          }
+        }
+      })
+    })
+  </script>
+</body>
+</html>

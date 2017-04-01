@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en" class="index">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<!--[if IE]>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <![endif]-->
+<title></title>
+<!-- BOOTSTRAP CORE STYLE  -->
+<link href="../assets/css/bootstrap.css" rel="stylesheet">
+<!-- FONT AWESOME STYLE  -->
+<link href="../assets/css/font-awesome.min.css" rel="stylesheet">
+<!-- CUSTOM STYLE  -->
+<link href="../assets/css/style.css" rel="stylesheet">
+<link href="../assets/css/others.css" rel="stylesheet">
+<script src="../assets/js/jquery-1.10.2.min.js"></script>
+<script src="../assets/js/jquery.form.min.js"></script>
+<script src="../assets/js/bootstrap.js"></script>
+<script src="../assets/js/cookie.js"></script>
+<script src="../assets/js/vue.min.js"></script>
+</head>
+<body>
+	<div class="container site-top">
+		<nav class="navbar">
+			<div class="navbar-header">
+				<img src="../assets/images/logo.png" alt="" />
+			</div>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li><span class="title"></span></li>
+					<li><span class="text-muted">欢迎登录</span></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="">首页</a></li>
+					<li><a href="">优势</a></li>
+					<li><a href="">服务</a></li>
+					<li><a href="">公司简介</a></li>
+				</ul>
+			</div>
+		</nav>
+		<div class="logout">
+			<span>你好！<span id="username"></span><span class="triangle-down"></span></span>
+			<div>
+				<span class="triangle-up"></span> <a href="javascript:void(0);" id="logout">退出</a>
+			</div>
+		</div>
+	</div>
+	</div>
+	<div id="app" class="container-fluid banner">
+		<div>
+			<div class="container">
+				<div class="clearfix">
+					<ol class="breadcrumb pull-left">
+						<li><a href="userDetails.html">基本资料</a></li>
+						<li class="active">我的抢单</li>
+						<li><a href="evaluationManagement.html">评价管理</a></li>
+						<li><a href="rightsReport.html">售后服务</a></li>
+						<li><a href="myNews.html">我的消息</a></li>
+						<li><a href="withdrawal.html">我的财务</a></li>
+					</ol>
+					<a href="grabSingle.html" class="pull-right grab"></a> <a href="postYourWant.html"
+						class="pull-right grab"></a>
+				</div>
+				<div class="site-nav">
+					<ul>
+						<li><a href="userDetails.html"><i class="icon icon-1"></i>基本资料</a>
+							<ul>
+								<li><a href="userDetails.html">个人信息</a></li>
+								<li><a href="changePwd.html">重置密码</a></li>
+							</ul></li>
+						<li class="active"><a href="entrust.html"><i class="icon icon-2"></i>我的抢单</a></li>
+						<li><a href="evaluationManagement.html"><i class="icon icon-4"></i>评价管理</a></li>
+						<li><a href="rightsReport.html"><i class="icon icon-5"></i>售后服务</a>
+							<ul>
+								<li><a href="rightsReport.html">维权举报</a></li>
+							</ul></li>
+						<li><a href="myNews.html"><i class="icon icon-6"></i>我的消息(0)</a></li>
+						<li><a href="withdrawal.html"><i class="icon icon-22"></i>我的财务</a>
+							<ul>
+								<li><a href="withdrawal.html">申请提现</a></li>
+								<li><a href="csahDetails.html">现金明细</a></li>
+							</ul></li>
+					</ul>
+				</div>
+				<div class="site-main">
+					<div class="title">
+						<span>查看详情</span>
+					</div>
+					<div class="table-responsive">
+						<table class="table table-striped" id="table">
+							<thead>
+								<tr>
+									<th>行业类型</th>
+									<th>专利类型</th>
+									<th>交底书数量</th>
+									<th>查看详情</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="demand in demands">
+									<td>{{demand.domain_id | getDomain}}</td>
+									<td>{{demand.ipr_type_id | iprType}}</td>
+									<td>1</td>
+									<td><a href="javascript:void(0);" v-on:click="look($event,demand.id,demand.order_id)">查看</a></td>
+									<td><buttton type="button" class="btn btn-warning" data-toggle="modal"
+											data-target=".bs-example-modal-lg" v-on:click="explain($event,demand.id)"> <i
+											class="icon icon-11"></i>提交说明
+										</button></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-xs-2 col-xs-offset-1">
+						<button type="button" class="btn btn-submit" v-on:click="back">返回上级</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+			aria-labelledby="myLargeModalLabel">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">提交专利说明</h4>
+					</div>
+					<input type="hidden" name="access_token" value="" id="access">
+					<div class="modal-body">
+						<div class="form-inline">
+							<label for="">上传权利要求书：</label>
+							<form method="post" action="../common/upload" enctype="multipart/form-data" class="upload">
+								<span class="line">权利要求书</span><input type="file" class="upload" name="file"
+									v-on:change="upload" />
+							</form>
+							<input type="hidden" id="url1">
+						</div>
+						<div class="form-inline">
+							<label for="">上传说明书附图：</label>
+							<form method="post" action="../common/upload" enctype="multipart/form-data" class="upload">
+								<span class="line">说明书附图</span><input type="file" class="upload" name="file"
+									v-on:change="upload" />
+							</form>
+							<input type="hidden" id="url2">
+						</div>
+						<div class="form-inline">
+							<label for="">上传摘要附图：</label>
+							<form method="post" action="../common/upload" enctype="multipart/form-data" class="upload">
+								<span class="line">摘要附图</span><input type="file" class="upload" name="file"
+									v-on:change="upload" />
+							</form>
+							<input type="hidden" id="url3">
+						</div>
+						<div class="form-inline">
+							<label for="">上传说明书：</label>
+							<form method="post" action="../common/upload" enctype="multipart/form-data" class="upload">
+								<span class="line">说明书</span><input type="file" class="upload" name="file"
+									v-on:change="upload" />
+							</form>
+							<input type="hidden" id="url4">
+						</div>
+						<div class="form-inline">
+							<label for="">上传说明书摘要：</label>
+							<form method="post" action="../common/upload" enctype="multipart/form-data" class="upload">
+								<span class="line">说明书摘要</span><input type="file" class="upload" name="file"
+									v-on:change="upload" />
+							</form>
+							<input type="hidden" id="url5">
+						</div>
+					</div>
+					<div class="modal-footer clearfix">
+						<button type="button" class="btn" data-dismiss="modal" v-on:click="submit">确认提交</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container footer">
+		<div class="footer-img pull-left">
+			<img src="../assets/images/weChat.png" class="pull-left" alt="" />
+			<div class="pull-left">
+				<p>扫一扫</p>
+				<p>关注我们</p>
+			</div>
+		</div>
+		<div class="footer-link pull-right">
+			<div class="clearfix">
+				<ul class="nav">
+					<li><a href="">关于我们</a></li>
+					<li><a href="">联系方式</a></li>
+					<li><a href="">加入我们</a></li>
+					<li><a href="">支付方式</a></li>
+				</ul>
+			</div>
+			<p>Copyright 2005-2006zbj.com</p>
+		</div>
+	</div>
+
+	<script>
+    $(function(){
+      $("#access").val(getCookie("access_token"))
+      Vue.filter('getDomain', function(value){
+        if (value == undefined) {
+          return ""
+        } else {
+          return vm.getDomain[value]
+        }
+      })
+      Vue.filter('iprType', function(value){
+        if (value == undefined) {
+          return ""
+        } else {
+          return vm.iprType[value] + "专利"
+        }
+      })
+      var vm = new Vue({
+        el : "#app",
+        data : {
+          demands : [],
+          iprType : {},
+          getDomain : {},
+          exId : null,
+        },
+        created : function(){
+          $.get("../common/getIprType", function(data){
+            var x = {};
+            for (var s = 0; s < data.data.length; s++) {
+              x[data.data[s].id] = data.data[s].name;
+            }
+            vm.iprType = x;
+          }, "JSON")
+          $.get("../common/getDomain", function(data){
+            var x = {};
+            for (var s = 0; s < data.data.length; s++) {
+              x[data.data[s].id] = data.data[s].name;
+            }
+            vm.getDomain = x;
+          }, "JSON")
+          $.post("../auth/demand/getDemands", {
+            access_token : getCookie("access_token"),
+            order_id : getQueryStringRegExp("id")
+          }, function(data){
+            vm.demands = data.data
+          }, "JSON")
+        },
+        methods : {
+          look : function(event, id, order_id){
+            location.href = "lookCilentDetail.html?access_token=" + getCookie("access_token") + "&id=" + id
+                + "&order_id=" + order_id
+          },
+          back : function(event){
+            location.href = "entrust.html?access_token=" + getCookie("access_token")
+          },
+          modify : function(event, id){
+            location.href = "modifyCilentDetails.html?access_token=" + getCookie("access_token") + "&order_id="
+                + getQueryStringRegExp("id") + "&id=" + id;
+          },
+          explain : function(event, id){
+            vm.exId = id
+          },
+          upload : function(event){
+            $(event.target).closest("form").ajaxSubmit({
+              dataType : "json",
+              success : function(data){
+                $(event.target).closest("form").next().val(data.data);
+              }
+            })
+          },
+          submit : function(event, id){
+            $.post("../auth/order/submitPatent", {
+              url1 : $("#url1").val(),
+              url2 : $("#url2").val(),
+              url3 : $("#url3").val(),
+              url4 : $("#url4").val(),
+              url5 : $("#url5").val(),
+              access_token : getCookie("access_token"),
+              order_id : getQueryStringRegExp("id"),
+              demand_id : vm.exId,
+            }, function(data){
+              if (data.success) {
+                
+              } else {
+                
+              }
+            }, "JSON")
+          },
+          back : function(){
+            location.href = "entrust.html?access_token=" + getCookie("access_token")
+          }
+        }
+      })
+    })
+  </script>
+</body>
+</html>

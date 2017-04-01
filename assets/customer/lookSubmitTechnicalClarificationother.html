@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<!--[if IE]>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <![endif]-->
+<title></title>
+<!-- BOOTSTRAP CORE STYLE  -->
+<link href="../assets/css/bootstrap.css" rel="stylesheet">
+<!-- FONT AWESOME STYLE  -->
+<link href="../assets/css/font-awesome.min.css" rel="stylesheet">
+<!-- CUSTOM STYLE  -->
+<link href="../assets/css/style.css" rel="stylesheet">
+<link href="../assets/css/others.css" rel="stylesheet">
+<script src="../assets/js/jquery-1.10.2.min.js"></script>
+<script src="../assets/js/jquery.form.min.js"></script>
+<script src="../assets/js/cookie.js"></script>
+<script src="../assets/js/vue.min.js"></script>
+</head>
+<body>
+	<div class="container site-top">
+		<nav class="navbar">
+			<div class="navbar-header">
+				<img src="../assets/images/logo.png" alt="" />
+			</div>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li><span class="title"></span></li>
+					<li><span class="text-muted">欢迎登录</span></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="">首页</a></li>
+					<li><a href="">优势</a></li>
+					<li><a href="">服务</a></li>
+					<li><a href="">公司简介</a></li>
+				</ul>
+			</div>
+		</nav>
+		<div class="logout">
+			<span>你好！<span id="username"></span><span class="triangle-down"></span></span>
+			<div>
+				<span class="triangle-up"></span> <a href="javascript:void(0);" id="logout">退出</a>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid banner" id="app">
+		<div class="container">
+			<div class="clearfix">
+				<a href="postYourWant.html" class="pull-right push">发布新的需求</a> <a href="postYourWant.html"
+					class="pull-right push">发布新的需求</a>
+			</div>
+			<div class="site-main">
+				<div class="title">
+					<span>发布新的需求</span>
+				</div>
+				<div class="sub">
+					<input type="hidden" name="access_token" value="" id="access"> <input type="hidden"
+						name="order_id" value="" id="order">
+					<div class="clearfix">
+						<p class="pull-left mr10">申请一件</p>
+						<p class="pull-left">{{demand.ipr_type_id | iprType}}</p>
+						<p class="pull-left">专利</p>
+					</div>
+					<div class="clearfix">
+						<p class="pull-left mr10">行业领域</p>
+						<p class="pull-left">{{demand.domain_id | getDomain}}</p>
+					</div>
+					<div class="clearfix">
+						<p class="special pull-left mr10"></p>
+						<p class="pull-left">第一发明人姓名及身份证号码</p>
+					</div>
+					<div>
+						<p>姓名：{{demand.first_inventor}}</p>
+						<p>身份证号码：{{demand.first_inventor}}</p>
+					</div>
+					<div  class="clearfix">
+						<p class="special pull-left mr10"></p>
+						<p class="pull-left">发明人设计名称</p>
+					</div>
+					<div>
+						<p>{{demand.design_name}}</p>
+					</div>
+					<div class="mt30 clearfix">
+						<p class="special pull-left mr10"></p>
+						<p class="pull-left">描述现有技术的所有缺点及本专利的对应优点</p>
+					</div>
+					<div>
+						<p>{{demand.relative_merits}}</p>
+					</div>
+					<div class="text">
+						<ul class="list">
+							<li>填写说明</li>
+							<li>1.发明名称应当简短、准确地表明发明专利申请要求保护的主题和类型；</li>
+							<li>2.发明名称中不得含有非技术词语，例如人名、单位名称、商标、代号、型号等；3.不得含有含糊的词语，例如“及其他”、“及其类似物”等；)一种电动汽车集成装置；</li>
+							<li>3.正面描述本发明所要解决的技术问题。如果找不出对比技术方案及其缺点，可用反推法，根据本发明的优点来找对应的缺点。缺点可以是成本高、产率低、合格率低、反应速度慢、副作用、效果差、使用不方便等类似问题。详细阐述本发明所要解决的技术问题；解决的技术问题应体现于解决现有技术的不足。</li>
+						</ul>
+					</div>
+					<div class="mt30 clearfix">
+						<p class="special pull-left mr10"></p>
+						<p class="pull-left">本发明欲保护的创新点</p>
+					</div>
+					<div>
+						<p>{{demand.innovation}}</p>
+					</div>
+					<div class="text">
+						<ul class="list">
+							<li>填写说明:</li>
+							<li>创新点为解决现有技术缺陷，达到发明目的的关键技术点</li>
+						</ul>
+					</div>
+					<div class="mt30 clearfix">
+						<p class="special pull-left mr10"></p>
+						<p class="pull-left">技术关键词</p>
+					</div>
+					<div>
+						<p>{{demand.keyword}}</p>
+					</div>
+					<div class="mt30 clearfix">
+						<p class="special pull-left mr10"></p>
+						<p class="pull-left">本发明技术方案的详细阐述</p>
+					</div>
+					<div>
+						<p>{{demand.detail}}</p>
+					</div>
+					<div class="text">
+						<ul class="list">
+							<li>填写说明：</li>
+							<li>1.针对发明目的来详细描述本发明的技术方案，并详细说明各硬件设备或功能模块的作用、连接关系以及功能。</li>
+							<li>2.专利必须是一个技术方案，应该阐述发明目的通过什么技术方案来实现的，不能只有原理，也不能只做功能介绍；</li>
+							<li>3.对于产品类型专利，交底书应当描述产品的模块构成或者电路构成，各构成模块的详细说明，可以替代的部件的列举，以及说明组成产品的各部分之间的相互关系；</li>
+							<li>4.对于方法类型的专利，交底书应当写明其步骤，每一步骤实施条件，并列明各骤所需的注意事项，包括可以用不同的参数或者参数范围表示的工艺条件。</li>
+							<li>5.请提供必要的附图，结 ；</li>
+							<li>6. 如果有替代方案也请详细说明。</li>
+						</ul>
+					</div>
+					<div class="mt50">
+						<a href="{{demand.technical_data}}">查看上传附件</a>
+					</div>
+					<div class="mt30">
+						<button type="button" class="butn" v-on:click="back($event,demand.id,demand.order_id)">返回上级</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container footer">
+		<div class="footer-img pull-left">
+			<img src="../assets/images/weChat.png" class="pull-left" alt="" />
+			<div class="pull-left">
+				<p>扫一扫</p>
+				<p>关注我们</p>
+			</div>
+		</div>
+		<div class="footer-link pull-right">
+			<div class="clearfix">
+				<ul class="nav">
+					<li><a href="">关于我们</a></li>
+					<li><a href="">联系方式</a></li>
+					<li><a href="">加入我们</a></li>
+					<li><a href="">支付方式</a></li>
+				</ul>
+			</div>
+			<p>Copyright 2005-2006zbj.com</p>
+		</div>
+	</div>
+
+	<script>
+    $(function(){
+      
+      Vue.filter('getDomain', function(value){
+        if (value == undefined) {
+          return ""
+        } else {
+          return vm.getDomain[value]
+        }
+      })
+      Vue.filter('iprType', function(value){
+        if (value == undefined) {
+          return ""
+        } else {
+          return vm.iprType[value]
+        }
+      })
+
+      var vm = new Vue({
+        el : "#app",
+        data : {
+          demand : {},
+          iprType : {},
+          getDomain : {},
+        },
+        created : function(){
+          $.get("../common/getIprType", function(data){
+            var x = {};
+            for (var s = 0; s < data.data.length; s++) {
+              x[data.data[s].id] = data.data[s].name;
+            }
+            vm.iprType = x;
+          }, "JSON")
+          $.get("../common/getDomain", function(data){
+            var x = {};
+            for (var s = 0; s < data.data.length; s++) {
+              x[data.data[s].id] = data.data[s].name;
+            }
+            vm.getDomain = x;
+            
+          }, "JSON")
+          $.post("../auth/demand/getDemand", {
+            access_token : getCookie("access_token"),
+            id : getQueryStringRegExp("id"),
+          }, function(data){
+            vm.demand = data.data;
+          }, "JSON")
+        },
+        methods : {
+          back : function(event, id, order_id){
+            location.href = "orderDetails.html?access_token=" + getCookie("access_token") + "&id=" + order_id;
+          }
+        }
+      })
+    })
+  </script>
+</body>
+</html>

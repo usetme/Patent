@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" class="index">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<!--[if IE]>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <![endif]-->
+<title></title>
+<!-- BOOTSTRAP CORE STYLE  -->
+<link href="../assets/css/bootstrap.css" rel="stylesheet">
+<!-- FONT AWESOME STYLE  -->
+<link href="../assets/css/font-awesome.min.css" rel="stylesheet">
+<!-- CUSTOM STYLE  -->
+<link href="../assets/css/style.css" rel="stylesheet">
+<link href="../assets/css/others.css" rel="stylesheet">
+<link href="../assets/css/bootstrapValidator.min.css" rel="stylesheet">
+<script src="../assets/js/jquery-1.10.2.min.js"></script>
+<script src="../assets/js/bootstrapValidator.min.js"></script>
+<script src="../assets/js/jquery.form.min.js"></script>
+<script src="../assets/js/cookie.js"></script>
+<script src="../assets/js/vue.min.js"></script>
+</head>
+<body>
+	<div class="container site-top">
+		<nav class="navbar">
+			<div class="navbar-header">
+				<img src="../assets/images/logo.png" alt="" />
+			</div>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li><span class="title"></span></li>
+					<li><span class="text-muted">欢迎登录</span></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="">首页</a></li>
+					<li><a href="">优势</a></li>
+					<li><a href="">服务</a></li>
+					<li><a href="">公司简介</a></li>
+				</ul>
+			</div>
+		</nav>
+		<div class="logout">
+			<span>你好！<span id="username"></span><span class="triangle-down"></span></span>
+			<div>
+				<span class="triangle-up"></span> <a href="javascript:void(0);" id="logout">退出</a>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid banner" id="app">
+		<div class="container">
+			<div class="clearfix">
+				<ol class="breadcrumb pull-left">
+					<li><a href="clientPage.html">基本资料</a></li>
+					<li class="active">我的委托</li>
+					<li><a href="controlOverInvoices.html">发票管理</a></li>
+					<li><a href="evaluationManagement.html">评价管理</a></li>
+					<li><a href="rightsReport.html">售后服务</a></li>
+					<li><a href="myNews.html">我的消息</a></li>
+				</ol>
+				<a href="postYourWant.html" class="pull-right push">发布新的需求</a> <a href="postYourWant.html"
+					class="pull-right push">发布新的需求</a>
+			</div>
+			<div class="site-nav">
+				<ul>
+					<li><a href="clientPage.html"><i class="icon icon-1"></i>基本资料</a>
+						<ul>
+							<li><a href="clientPage.html">个人信息</a></li>
+							<li><a href="changePwd.html">重置密码</a></li>
+						</ul></li>
+					<li class="active"><a href="myCommission.html"><i class="icon icon-2"></i>我的委托</a></li>
+					<li><a href="controlOverInvoices.html"><i class="icon icon-3"></i>发票管理</a>
+						<ul>
+							<li><a href="controlOverInvoices.html">申请开票</a></li>
+							<li><a href="historyControlOverInvoices.html">开票历史</a></li>
+							<li><a href="address.html">地址管理</a></li>
+						</ul></li>
+					<li><a href="evaluationManagement.html"><i class="icon icon-4"></i>评价管理</a></li>
+					<li><a href="rightsReport.html"><i class="icon icon-5"></i>售后服务</a>
+						<ul>
+							<li><a href="rightsReport.html">维权举报</a></li>
+						</ul></li>
+					<li><a href="myNews.html"><i class="icon icon-6"></i>我的消息(0)</a></li>
+				</ul>
+			</div>
+			<div class="site-main post">
+				<div class="title">
+					<span>发布新的需求</span>
+				</div>
+				<div id="form" class="form-horizontal">
+					<form role="form" id="reg" action="../auth/order/createOrder" method="post"
+						class="form-horizontal">
+						<input type="hidden" name="access_token" value="" id="access">
+						<div class="form-group">
+							<label for="phone" class="col-xs-3 control-label">姓名</label>
+							<div class="col-xs-4">
+								<input class="form-control" type="text" name="name" value="{{content.name}}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="phone" class="col-xs-3 control-label">手机号</label>
+							<div class="col-xs-4">
+								<input class="form-control" type="text" name="phone" value={{content.phone}}>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="phone" class="col-xs-3 control-label">QQ</label>
+							<div class="col-xs-4">
+								<input class="form-control" type="text" name="qq" value="{{content.qq}}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="phone" class="col-xs-3 control-label">邮箱</label>
+							<div class="col-xs-4">
+								<input class="form-control" type="email" name="email" value="{{content.email}}">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-4 col-md-offset-3">
+								<button type="button" v-on:click="submit" class="btn btn-submit">提交技术交底</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container footer">
+		<div class="footer-img pull-left">
+			<img src="../assets/images/weChat.png" class="pull-left" alt="" />
+			<div class="pull-left">
+				<p>扫一扫</p>
+				<p>关注我们</p>
+			</div>
+		</div>
+		<div class="footer-link pull-right">
+			<div class="clearfix">
+				<ul class="nav">
+					<li><a href="">关于我们</a></li>
+					<li><a href="">联系方式</a></li>
+					<li><a href="">加入我们</a></li>
+					<li><a href="">支付方式</a></li>
+				</ul>
+			</div>
+			<p>Copyright 2005-2006zbj.com</p>
+		</div>
+	</div>
+
+	<script>
+    $(function(){
+      $("#access").val(getCookie("access_token"));
+      var vm = new Vue({
+        el : "#app",
+        data : {
+          content : [],
+        },
+        created : function(){
+          $.post("../auth/userinfo/userInfo", {
+            access_token : getCookie("access_token")
+          }, function(data){
+            vm.content = data.data
+          }, "JSON")
+        },
+        methods : {
+          submit : function(event){
+            $('#form').bootstrapValidator('validate')
+            if ($('#form').data('bootstrapValidator').isValid()) {
+              $("#reg").ajaxSubmit(
+                  {
+                    dataType : "json",
+                    success : function(data){
+                      if (data.success) {
+                        location.href = "submitTechnicalClarification.html?access_token=" + getCookie("access_token")
+                            + "&from=1" + "&order_id=" + data.data
+                      } else {
+                        
+                      }
+                    }
+                  }, "JSON")
+            } else {
+              $('#form').bootstrapValidator('validate')
+            }
+          }
+        }
+      });
+      $('#form').bootstrapValidator({
+        message : 'This value is not valid',
+        feedbackIcons : {
+          valid : 'glyphicon glyphicon-ok',
+          invalid : 'glyphicon glyphicon-remove',
+          validating : 'glyphicon glyphicon-refresh'
+        },
+        fields : {
+          name : {
+            message : '用户名验证失败',
+            validators : {
+              notEmpty : {
+                message : '用户名不能为空'
+              },
+            }
+          },
+          phone : {
+            validators : {
+              notEmpty : {
+                message : '手机号码不能为空'
+              },
+              regexp : {
+                regexp : /^[0-9]{11}$/,
+                message : '手机号码格式错误'
+              }
+            }
+          },
+          email : {
+            validators : {
+              notEmpty : {
+                message : '邮箱不能为空'
+              },
+              emailAddress : {
+                message : '请填写正确的邮箱地址。'
+              }
+            }
+          },
+        }
+      })
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" class="index">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<!--[if IE]>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <![endif]-->
+<title></title>
+<!-- BOOTSTRAP CORE STYLE  -->
+<link href="../assets/css/bootstrap.css" rel="stylesheet">
+<!-- FONT AWESOME STYLE  -->
+<link href="../assets/css/font-awesome.min.css" rel="stylesheet">
+<!-- CUSTOM STYLE  -->
+<link href="../assets/css/style.css" rel="stylesheet">
+<link href="../assets/css/others.css" rel="stylesheet">
+<script src="../assets/js/jquery-1.10.2.min.js"></script>
+<script src="../assets/js/jquery.form.min.js"></script>
+<script src="../assets/js/cookie.js"></script>
+<script src="../assets/js/vue.min.js"></script>
+</head>
+<body>
+	<div class="container site-top">
+		<nav class="navbar">
+			<div class="navbar-header">
+				<img src="../assets/images/logo.png" alt="" />
+			</div>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li><span class="title"></span></li>
+					<li><span class="text-muted">欢迎登录</span></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="">首页</a></li>
+					<li><a href="">优势</a></li>
+					<li><a href="">服务</a></li>
+					<li><a href="">公司简介</a></li>
+				</ul>
+			</div>
+		</nav>
+		<div class="logout">
+			<span>你好！<span id="username"></span><span class="triangle-down"></span></span>
+			<div>
+				<span class="triangle-up"></span> <a href="javascript:void(0);" id="logout">退出</a>
+			</div>
+		</div>
+	</div>
+	<div id="app" class="container-fluid banner apply">
+		<div class="container">
+			<div class="clearfix">
+				<a href="postYourWant.html" class="pull-right push">发布新的需求</a> <a href="postYourWant.html"
+					class="pull-right push">发布新的需求</a>
+			</div>
+			<div class="site-nav">
+				<ul>
+					<li><a href="clientPage.html"><i class="icon icon-1"></i>基本资料</a>
+						<ul>
+							<li><a href="clientPage.html">个人信息</a></li>
+							<li><a href="changePwd.html">重置密码</a></li>
+						</ul></li>
+					<li><a href="myCommission.html"><i class="icon icon-2"></i>我的委托</a></li>
+					<li><a href="controlOverInvoices.html"><i class="icon icon-3"></i>发票管理</a>
+						<ul>
+							<li class="active"><a href="controlOverInvoices.html">申请开票</a></li>
+							<li><a href="historyControlOverInvoices.html">开票历史</a></li>
+							<li><a href="address.html">地址管理</a></li>
+						</ul></li>
+					<li><a href="evaluationManagement.html"><i class="icon icon-4"></i>评价管理</a></li>
+					<li><a href="rightsReport.html"><i class="icon icon-5"></i>售后服务</a>
+						<ul>
+							<li><a href="rightsReport.html">维权举报</a></li>
+						</ul></li>
+					<li><a href="myNews.html"><i class="icon icon-6"></i>我的消息(0)</a></li>
+				</ul>
+			</div>
+			<div class="site-main">
+				<div id="tabs">
+					<ul class="nav nav-tabs">
+						<li role="presentation" class="active"><a href="controlOverInvoices.html">申请开票</a></li>
+						<li role="presentation"><a href="historyControlOverInvoices.html">开票历史</a></li>
+						<li role="presentation"><a href="address.html">地址管理</a></li>
+					</ul>
+				</div>
+				<form method="post" id="reg" action="../auth/invoice/add" class="form-horizontal register">
+					<input type="hidden" name="access_token" value="" id="access"> <input type="hidden"
+						name="order_id" value="" id="order_id">
+					<div class="form-group type">
+						<label for="" class="col-xs-2 control-label">发票种类：</label> <a href="applyForInvoiceOther.html"
+							class="ml10 active">增值票</a> <a href="applyForInvoice.html">普通票</a>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-xs-4 col-xs-offset-2">
+							<button type="button" class="btn btn-submit" v-on:click="submit">确认开票</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="container footer">
+		<div class="footer-img pull-left">
+			<img src="../assets/images/weChat.png" class="pull-left" alt="" />
+			<div class="pull-left">
+				<p>扫一扫</p>
+				<p>关注我们</p>
+			</div>
+		</div>
+		<div class="footer-link pull-right">
+			<div class="clearfix">
+				<ul class="nav">
+					<li><a href="">关于我们</a></li>
+					<li><a href="">联系方式</a></li>
+					<li><a href="">加入我们</a></li>
+					<li><a href="">支付方式</a></li>
+				</ul>
+			</div>
+			<p>Copyright 2005-2006zbj.com</p>
+		</div>
+	</div>
+	<script>
+    $(function(){
+      $("#access").val(getCookie("access_token"));
+      $("#order_id").val(getQueryStringRegExp("id"));
+      $(".price").html("￥" + getQueryStringRegExp("sum"))
+      var vm = new Vue({
+        el : "#app",
+        methods : {
+          submit : function(event){
+            $("#reg").ajaxSubmit(
+                {
+                  dataType : "json",
+                  success : function(data){
+                    if (data.success) {
+                      location.href = "controlOverInvoices.html?access_token=" + getCookie("access_token") + "&id="
+                          + getQueryStringRegExp("id")
+                    } else {
+                      
+                    }
+                  }
+                })
+          }
+        }
+      })
+    })
+  </script>
+</body>
+</html>

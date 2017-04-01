@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<!--[if IE]>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <![endif]-->
+<title></title>
+<!-- BOOTSTRAP CORE STYLE  -->
+<link href="../assets/css/bootstrap.css" rel="stylesheet">
+<!-- FONT AWESOME STYLE  -->
+<link href="../assets/css/font-awesome.min.css" rel="stylesheet">
+<!-- CUSTOM STYLE  -->
+<link href="../assets/css/style.css" rel="stylesheet">
+<link href="../assets/css/others.css" rel="stylesheet">
+<script src="../assets/js/jquery-1.10.2.min.js"></script>
+<script src="../assets/js/cookie.js"></script>
+<script src="../assets/js/vue.min.js"></script>
+</head>
+<body class="evaluationManagement">
+	<div class="container site-top">
+		<nav class="navbar">
+			<div class="navbar-header">
+				<img src="../assets/images/logo.png" alt="" />
+			</div>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li><span class="title"></span></li>
+					<li><span class="text-muted">欢迎登录</span></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="">首页</a></li>
+					<li><a href="">优势</a></li>
+					<li><a href="">服务</a></li>
+					<li><a href="">公司简介</a></li>
+				</ul>
+			</div>
+		</nav>
+		<div class="logout">
+			<span>你好！<span id="username"></span><span class="triangle-down"></span></span>
+			<div>
+				<span class="triangle-up"></span> <a href="javascript:void(0);" id="logout">退出</a>
+			</div>
+		</div>
+	</div>
+	<div id="app" class="container-fluid banner">
+		<div>
+			<div class="container">
+				<div class="clearfix">
+					<ol class="breadcrumb pull-left">
+						<li><a href="userDetails.html">基本资料</a></li>
+						<li><a href="entrust.html">我的抢单</a></li>
+						<li><a href="evaluationManagement.html">评价管理</a></li>
+						<li><a href="rightsReport.html">售后服务</a></li>
+						<li><a href="myNews.html">我的消息</a></li>
+						<li><a href="withdrawal.html">我的财务</a></li>
+					</ol>
+					<a href="grabSingle.html" class="pull-right grab"></a> <a href="grabSingle.html"
+						class="pull-right grab"></a>
+				</div>
+				<div class="site-nav">
+					<ul>
+						<li><a href="userDetails.html"><i class="icon icon-1"></i>基本资料</a>
+							<ul>
+								<li><a href="userDetails.html">个人信息</a></li>
+								<li><a href="changePwd.html">重置密码</a></li>
+							</ul></li>
+						<li class="active"><a href="entrust.html"><i class="icon icon-2"></i>我的抢单</a></li>
+						<li><a href="evaluationManagement.html"><i class="icon icon-4"></i>评价管理</a></li>
+						<li><a href="refundRightsReportManagement.html"><i class="icon icon-5"></i>售后服务</a>
+							<ul>
+								<li><a href="refundRightsReportManagement.html">申请退款</a></li>
+								<li><a href="rightsReport.html">维权举报</a></li>
+							</ul></li>
+						<li><a href="myNews.html"><i class="icon icon-6"></i>我的消息(0)</a></li>
+						<li><a href="withdrawal.html"><i class="icon icon-22"></i>我的财务</a>
+							<ul>
+								<li><a href="withdrawal.html">申请提现</a></li>
+								<li><a href="csahDetails.html">现金明细</a></li>
+							</ul></li>
+					</ul>
+				</div>
+				<div class="site-main">
+					<div class="title">
+						<span>我的抢单</span>
+					</div>
+					<div>
+						<div class="clearfix" v-for="ord in order">
+							<div class="pull-left pay_left">
+								<div class="tip hei18"></div>
+								<div class="pay_one">
+									<p class="pull-left mr30">￥{{ord.price}}</p>
+									<p class="pill-left">行业类型：{{ord.domians}}</p>
+								</div>
+								<div class="pay_two">
+									<p>
+										专利类型数量：<span v-for="(key, val) in ord.patents">{{ key }}*{{ val }} </span>
+									</p>
+								</div>
+								<div class="pay_two">
+									<p class="pull-left">创新点关键词：{{ord.innovations}}</p>
+								</div>
+							</div>
+							<div class="pull-right pay_three">
+								<p>
+									<button type="button" class="butn" v-on:click="submit(ord.id)">抢单</button>
+								</p>
+							</div>
+							<div>
+								<p class="pay_p"></p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<nav class="nav_foot">
+					<ul class="pagination">
+						<li v-if="currentPage>1"><a href="javascript:void(0);" aria-label="Previous"
+							v-on:click="prev"> <span aria-hidden="true">&laquo;</span>
+						</a></li>
+						<li v-for="p in totalPage" v-if="p<3 || p>totalPage-4 || (p>currentPage-4 && p<currentPage+2)"><span
+							v-if="p>3 && p==currentPage-3">...</span> <a href="javascript:void(0);"
+							v-on:click="toPage(p+1)">{{p+1}}</a> <span v-if="p<totalPage-4 && p==currentPage+1">...</span>
+						</li>
+						<li v-if="currentPage<totalPage"><a href="javascript:void(0);" aria-label="Next"
+							v-on:click="next"> <span aria-hidden="true">&raquo;</span>
+						</a></li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+	<div class="container footer">
+		<div class="footer-img pull-left">
+			<img src="../assets/images/weChat.png" class="pull-left" alt="" />
+			<div class="pull-left">
+				<p>扫一扫</p>
+				<p>关注我们</p>
+			</div>
+		</div>
+		<div class="footer-link pull-right">
+			<div class="clearfix">
+				<ul class="nav">
+					<li><a href="">关于我们</a></li>
+					<li><a href="">联系方式</a></li>
+					<li><a href="">加入我们</a></li>
+					<li><a href="">支付方式</a></li>
+				</ul>
+			</div>
+			<p>Copyright 2005-2006zbj.com</p>
+		</div>
+	</div>
+	<script>
+    $(function(){
+      Vue.filter('time', function(value){
+        if (value == undefined) {
+          return ""
+        }
+        var date = new Date(value);
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var seconds = date.getSeconds();
+        if (minutes < 10) {
+          minutes = "0" + minutes
+        }
+        if (seconds < 10) {
+          seconds = "0" + seconds
+        }
+        return year + "/" + month + "/" + day + " " + hours + ":" + minutes + ":" + seconds;
+      })
+      var page = getQueryStringRegExp("page") || 1;
+      var rows = 15;
+      var x = {};
+      var vm = new Vue({
+        el : "#app",
+        data : {
+          order : [],
+          currentPage : page,
+          totalPage : 0,
+        },
+        created : function(){
+          $.post("../auth/order/contendOrder", {
+            access_token : getCookie("access_token"),
+            page : page,
+            rows : rows
+          }, function(data){
+            vm.currentPage = data.currentPage
+            vm.totalPage = data.totalPage
+            if (data.data.length == 0 && page > 1) {
+              location.href = location.href.split("&page")[0]
+            } else {
+              vm.order = data.data
+              for (var i = 0; i < data.data.length; i++) {
+                
+              }
+            }
+          }, "JSON")
+        },
+        methods : {
+          list : function(){
+            history.pushState("", "Title", location.href.split("&page")[0] + "&page=" + vm.currentPage);
+            $.post("../auth/message/list", {
+              access_token : getCookie("access_token"),
+              page : vm.currentPage,
+              rows : rows
+            }, function(data){
+              vm.currentPage = data.currentPage
+              vm.totalPage = data.totalPage
+              vm.cont = data.data
+            }, "JSON")
+          },
+          prev : function(){
+            if (vm.currentPage > 1)
+              vm.currentPage--;
+            vm.list();
+          },
+          next : function(){
+            if (vm.currentPage < vm.totalPage)
+              vm.currentPage++;
+            vm.list();
+          },
+          toPage : function(page){
+            vm.currentPage = page;
+            vm.list();
+          },
+          submit : function(id){
+            $.post("../auth/order/changeState", {
+              access_token : getCookie("access_token"),
+              id : id,
+              state : 4
+            }, function(data){
+              if (data.success) {
+                location.href = "entrust.html?access_token=" + getCookie("access_token")
+              }
+            }, "JSON")
+          }
+        }
+      })
+    })
+  </script>
+</body>
+</html>

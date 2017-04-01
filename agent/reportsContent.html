@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" class="index">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<!--[if IE]>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <![endif]-->
+<title></title>
+<!-- BOOTSTRAP CORE STYLE  -->
+<link href="../assets/css/bootstrap.css" rel="stylesheet">
+<!-- FONT AWESOME STYLE  -->
+<link href="../assets/css/font-awesome.min.css" rel="stylesheet">
+<!-- CUSTOM STYLE  -->
+<link href="../assets/css/style.css" rel="stylesheet">
+<link href="../assets/css/others.css" rel="stylesheet">
+<script src="../assets/js/jquery-1.10.2.min.js"></script>
+<script src="../assets/js/cookie.js"></script>
+<script src="../assets/js/vue.min.js"></script>
+</head>
+<body>
+	<div class="container site-top">
+		<nav class="navbar">
+			<div class="navbar-header">
+				<img src="../assets/images/logo.png" alt="" />
+			</div>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li><span class="title"></span></li>
+					<li><span class="text-muted">欢迎登录</span></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="">首页</a></li>
+					<li><a href="">优势</a></li>
+					<li><a href="">服务</a></li>
+					<li><a href="">公司简介</a></li>
+				</ul>
+		</nav>
+		<div class="logout">
+			<span>你好！<span id="username"></span><span class="triangle-down"></span></span>
+			<div>
+				<span class="triangle-up"></span> <a href="javascript:void(0);" id="logout">退出</a>
+			</div>
+		</div>
+	</div>
+	<div id="app" class="container-fluid banner">
+		<div>
+			<div class="container">
+				<div class="clearfix">
+					<ol class="breadcrumb pull-left">
+						<li><a href="userDetails.html">基本资料</a></li>
+						<li><a href="entrust.html">我的抢单</a></li>
+						<li><a href="evaluationManagement.html">评价管理</a></li>
+						<li class="active">售后服务</li>
+						<li><a href="myNews.html">我的消息</a></li>
+						<li><a href="withdrawal.html">我的财务</a></li>
+					</ol>
+					<a href="grabSingle.html" class="pull-right grab"></a> <a href="grabSingle.html"
+						class="pull-right grab"></a>
+				</div>
+				<div class="site-nav">
+					<ul>
+						<li><a href="clientPage.html"><i class="icon icon-1"></i>基本资料</a>
+							<ul>
+								<li><a href="clientPage.html">个人信息</a></li>
+								<li><a href="changePwd.html">重置密码</a></li>
+							</ul></li>
+						<li><a href="myCommission.html"><i class="icon icon-2"></i>我的委托</a></li>
+						<li><a href="evaluationManagement.html"><i class="icon icon-4"></i>评价管理</a></li>
+						<li><a href="rightsReport.html"><i class="icon icon-5"></i>售后服务</a>
+							<ul>
+								<li class="active"><a href="rightsReport.html">维权举报</a></li>
+							</ul></li>
+						<li><a href="myNews.html"><i class="icon icon-6"></i>我的消息(0)</a></li>
+						<li><a href="withdrawal.html"><i class="icon icon-22"></i>我的财务</a>
+							<ul>
+								<li><a href="withdrawal.html">申请提现</a></li>
+								<li><a href="csahDetails.html">现金明细</a></li>
+							</ul></li>
+					</ul>
+				</div>
+				<div class="site-main">
+				<div class="title">
+					<span>维权历史详情</span>
+				</div>
+				<div class="reports-detail">
+					<p class="title">{{cont.title}}</p>
+					<p class="time">{{cont.create_time | time}}</p>
+					<p class="content">{{cont.content}}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container footer">
+		<div class="footer-img pull-left">
+			<img src="../assets/images/weChat.png" class="pull-left" alt="" />
+			<div class="pull-left">
+				<p>扫一扫</p>
+				<p>关注我们</p>
+			</div>
+		</div>
+		<div class="footer-link pull-right">
+			<div class="clearfix">
+				<ul class="nav">
+					<li><a href="">关于我们</a></li>
+					<li><a href="">联系方式</a></li>
+					<li><a href="">加入我们</a></li>
+					<li><a href="">支付方式</a></li>
+				</ul>
+			</div>
+			<p>Copyright 2005-2006zbj.com</p>
+		</div>
+	</div>
+	<script>
+    $(function(){
+      Vue.filter('time', function(value){
+        if (value == undefined) {
+          return ""
+        }
+        var date = new Date(value);
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var seconds = date.getSeconds();
+        if (minutes < 10) {
+          minutes = "0" + minutes
+        }
+        if (seconds < 10) {
+          seconds = "0" + seconds
+        }
+        return year + "/" + month + "/" + day + " " + hours + ":" + minutes + ":" + seconds;
+        
+      })
+      var vm = new Vue({
+        el : "#app",
+        data : {
+          cont : [],
+        },
+        created : function(){
+          $.post("../auth/equity/getequity", {
+            access_token : getCookie("access_token"),
+            id : getQueryStringRegExp("id")
+          }, function(data){
+            vm.cont = data.data
+          }, "JSON")
+        }
+      })
+    })
+  </script>
+</body>
+</html>

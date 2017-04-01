@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<!--[if IE]>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <![endif]-->
+<title></title>
+<!-- BOOTSTRAP CORE STYLE  -->
+<link href="../assets/css/bootstrap.css" rel="stylesheet">
+<!-- FONT AWESOME STYLE  -->
+<link href="../assets/css/font-awesome.min.css" rel="stylesheet">
+<!-- CUSTOM STYLE  -->
+<link href="../assets/css/style.css" rel="stylesheet">
+<link href="../assets/css/others.css" rel="stylesheet">
+<script src="../assets/js/jquery-1.10.2.min.js"></script>
+<script src="../assets/js/jquery.form.min.js"></script>
+<script src="../assets/js/cookie.js"></script>
+<script src="../assets/js/vue.min.js"></script>
+</head>
+<body>
+	<div class="container site-top">
+		<nav class="navbar">
+			<div class="navbar-header">
+				<img src="../assets/images/logo.png" alt="" />
+			</div>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li><span class="title"></span></li>
+					<li><span class="text-muted">欢迎登录</span></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="">首页</a></li>
+					<li><a href="">优势</a></li>
+					<li><a href="">服务</a></li>
+					<li><a href="">公司简介</a></li>
+				</ul>
+			</div>
+		</nav>
+		<div class="logout">
+			<span>你好！<span id="username"></span><span class="triangle-down"></span></span>
+			<div>
+				<span class="triangle-up"></span> <a href="javascript:void(0);" id="logout">退出</a>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid banner" id="app">
+		<div class="container">
+			<div class="">
+				<ol class="breadcrumb pull-left">
+					<li><a href="clientPage.html">基本资料</a></li>
+					<li class="active">我的委托</li>
+					<li><a href="controlOverInvoices.html">发票管理</a></li>
+					<li><a href="evaluationManagement.html">评价管理</a></li>
+					<li><a href="rightsReport.html">售后服务</a></li>
+					<li><a href="myNews.html">我的消息</a></li>
+				</ol>
+				<a href="postYourWant.html" class="pull-right push">发布新的需求</a> <a href="postYourWant.html"
+					class="pull-right push">发布新的需求</a>
+			</div>
+			<div class="site-main">
+			<div class="title">
+				<span>需求详情</span>
+			</div>
+			<table id="other">
+				<tr>
+					<td class="col1">专利类型：</td>
+					<td class="col2">{{demand.ipr_type_id |iprType}}</td>
+					<td class="col1">行业领域：</td>
+					<td class="col2">{{demand.domain_id |getDomain}}</td>
+				</tr>
+				<tr>
+					<td class="col1">第一发明人：</td>
+					<td class="col2">{{demand.inventors[0].name}}</td>
+					<td class="col1">第一发明人身份证：</td>
+					<td class="col2">{{demand.inventors[0].card_id}}</td>
+				</tr>
+				<tr>
+					<td class="col1">专利名称：</td>
+					<td class="col2">{{demand.design_name}}</td>
+					<td class="col1">技术关键词：</td>
+					<td class="col2">{{demand.keyword}}</td>
+				</tr>
+				<tr>
+					<td class="col1">描述现有技术的所有缺点及本专利的对应优点：</td>
+					<td colspan="3" class="col2">{{demand.relative_merits}}</td>
+				</tr>
+				<tr>
+					<td class="col1">本发明欲保护的创新点：</td>
+					<td colspan="3" class="col2">{{demand.innovation}}</td>
+				</tr>
+				<tr>
+					<td class="col1">本发明技术方案的详细阐述：</td>
+					<td colspan="3" class="col2">{{demand.detail}}</td>
+				</tr>
+				<tr>
+					<td class="col1">查看附件</td>
+					<td colspan="3" class="col2 other-a"><a v-for="attachment in demand.attachments"
+						href="{{attachment.swf_path || attachment.path}}" target="_blank" class="pull-left">{{attachment.name ||
+							"附件"}}</a></td>
+				</tr>
+				<tr id="detail" v-if="info.state_id==6" v-for="parent in parents">
+					<td class="col1">查看附件</td>
+					<td colspan="3" class="col2 other-a"><a href="{{parent.attachment1.swf_path}}" target="_blank" class="pull-left">查看专利说明</a> <a
+						href="{{parent.attachment2.path}}" target="_blank" class="pull-left">查看权利要求书</a> <a href="{{parent.attachment3.path}}" target="_blank"
+						class="pull-left">查看说明书附图</a> <a href="{{parent.attachment4.swf_path}}" target="_blank" class="pull-left">查看摘要附图</a> <a
+						href="{{parent.attachment5.swf_path}}" target="_blank" class="pull-left">查看说明书</a></td>
+				</tr>
+			</table>
+			<button type="button" v-on:click="back($event)" class="other-btn">返回上级</button>
+		</div>
+	</div>
+</div>
+</div>
+<div class="container footer">
+	<div class="footer-img pull-left">
+		<img src="../assets/images/weChat.png" class="pull-left" alt="" />
+		<div class="pull-left">
+			<p>扫一扫</p>
+			<p>关注我们</p>
+		</div>
+	</div>
+	<div class="footer-link pull-right">
+		<div class="clearfix">
+			<ul class="nav">
+				<li><a href="">关于我们</a></li>
+				<li><a href="">联系方式</a></li>
+				<li><a href="">加入我们</a></li>
+				<li><a href="">支付方式</a></li>
+			</ul>
+		</div>
+		<p>Copyright 2005-2006zbj.com</p>
+	</div>
+</div>
+<script>
+$(function(){
+  
+  Vue.filter('getDomain', function(value){
+    if (value == undefined) {
+      return ""
+    } else {
+      return vm.getDomain[value]
+    }
+  })
+  Vue.filter('iprType', function(value){
+    if (value == undefined) {
+      return ""
+    } else {
+      return vm.iprType[value]
+    }
+  })
+  var vm = new Vue({
+    el : "#app",
+    data : {
+      demand : {},
+      iprType : {},
+      getDomain : {},
+      info : [],
+      parents : []
+    },
+    created : function(){
+      $.get("../common/getIprType", function(data){
+        var x = {};
+        for (var s = 0; s < data.data.length; s++) {
+          x[data.data[s].id] = data.data[s].name;
+        }
+        vm.iprType = x;
+      }, "JSON")
+      $.get("../common/getDomain", function(data){
+        var x = {};
+        for (var s = 0; s < data.data.length; s++) {
+          x[data.data[s].id] = data.data[s].name;
+        }
+        vm.getDomain = x;
+      }, "JSON")
+      $.post("../auth/demand/getDemand", {
+        access_token : getCookie("access_token"),
+        id : getQueryStringRegExp("id"),
+      }, function(data){
+        vm.demand = data.data;
+      }, "JSON")
+      $.post("../auth/order/getOrderInfo", {
+        access_token : getCookie("access_token"),
+        id : getQueryStringRegExp("order_id")
+      }, function(data){
+        vm.info = data.data
+      }, "JSON")
+      $.post("../auth/order/getPatents", {
+        demand_id : getQueryStringRegExp("id"),
+        access_token : getCookie("access_token"),
+      }, function(data){	
+    	  vm.parents = data.data
+      }, "JSON")
+    },
+    methods : {
+      back : function(event){
+        location.href = "clientDetails.html?id=" + getQueryStringRegExp("order_id") + "&access_token="
+            + getCookie("access_token");
+      }
+    }
+  })
+})
+</script>
+</body>
+</html>
